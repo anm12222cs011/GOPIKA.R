@@ -1,0 +1,71 @@
+const apiKey = "bd5e378503939ddaee76f12ad7a97608"; // Replace with your OpenWeatherMap API key
+const searchBox = document.querySelector('.search-box input');
+const searchBtn = document.querySelector('.search-box button');
+
+async function getWeather(city) {
+    try {
+        // Get current weather
+        const currentResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+        );
+        if (!currentResponse.ok) throw new Error('City not found');
+        const currentData = await currentResponse.json();
+        
+        // Get 5-day forecast
+        const forecastResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`
+        );
+        const forecastData = await forecastResponse.json();
+
+        updateWeather(currentData);
+        updateForecast(forecastData);
+    } catch (error) {
+        alert("Please enter a valid city name");
+    }
+}
+
+function updateWeather(data) {
+    document.querySelector('.city').innerHTML = `Weather in ${data.name}`;
+    document.querySelector('.temperature').innerHTML = `${Math.round(data.main.temp)}°C`;
+    document.querySelector('.description').innerHTML = data.weather[0].description;
+    document.querySelector('.humidity').innerHTML = `${data.main.humidity}%`;
+    document.querySelector('.wind').innerHTML = `${data.wind.speed} km/h`;
+    document.querySelector('.weather-icon').src = 
+        `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+}
+
+function updateForecast(data) {
+    const forecastCards = document.querySelector('.forecast-cards');
+    forecastCards.innerHTML = '';
+    
+    // Get one forecast per day at 12:00
+    const dailyData = data.list.filter(item => item.dt_txt.includes('12:00:00'));
+
+    dailyData.forEach(day => {
+        const date = new Date(day.dt * 1000);
+        const card = document.createElement('div');
+        card.classList.add('forecast-card');
+        
+        card.innerHTML = `
+            <div class="date">${date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+            <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}.png" alt="weather icon">
+            <div class="temp">${Math.round(day.main.temp)}°C</div>
+            <div class="description">${day.weather[0].description}</div>
+        `;
+        
+        forecastCards.appendChild(card);
+    });
+}
+
+searchBtn.addEventListener('click', () => {
+    getWeather(searchBox.value);
+});
+
+searchBox.addEventListener('keypress', (event) => {
+    if (event.key === "Enter") {
+        getWeather(searchBox.value);
+    }
+});
+
+// Initial weather for default city
+getWeather('London');

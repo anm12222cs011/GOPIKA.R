@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5-Day Weather Forecast</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="search-box">
+            <input type="text" placeholder="Enter your location">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="weather-display">
+            <div class="current-weather">
+                <h2 class="city">Weather in City</h2>
+                <div class="weather-info">
+                    <img src="" alt="weather icon" class="weather-icon">
+                    <h1 class="temperature">--°C</h1>
+                    <p class="description">Weather Description</p>
+                </div>
+                <div class="weather-details">
+                    <div class="detail">
+                        <i class="fas fa-water"></i>
+                        <div>
+                            <span class="humidity">--%</span>
+                            <p>Humidity</p>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <i class="fas fa-wind"></i>
+                        <div>
+                            <span class="wind">-- km/h</span>
+                            <p>Wind Speed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="forecast-container">
+                <h3>5-Day Forecast</h3>
+                <div class="forecast-cards">
+                    <!-- Forecast cards will be added here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
